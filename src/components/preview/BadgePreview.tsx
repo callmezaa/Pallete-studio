@@ -6,8 +6,8 @@ export function BadgePreview() {
   if (colors.length < 2) return null;
   return (
     <div className="flex flex-wrap gap-2">
-      {colors.slice(0, 4).map((c) => (
-        <span key={c.hex} className="inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium" style={{ backgroundColor: c.hex + "20", color: c.hex, borderColor: c.hex + "40" }}>{c.hex}</span>
+      {colors.slice(0, 4).map((c, i) => (
+        <span key={`${c.hex}-${i}`} className="inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium" style={{ backgroundColor: c.hex + "20", color: c.hex, borderColor: c.hex + "40" }}>{c.hex}</span>
       ))}
     </div>
   );
