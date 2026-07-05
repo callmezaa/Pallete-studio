@@ -4,6 +4,8 @@ import { useEffect, useRef, useCallback } from "react";
 import { useUploadStore } from "@/store/upload-store";
 import { usePaletteStore } from "@/store/palette-store";
 import { hexToRgb, rgbToHsl, rgbToOklch, hexToCssVar } from "@/lib/colors";
+import { generateColorName } from "@/lib/naming";
+import { detectMood } from "@/lib/mood";
 import type { ExtractedColor } from "@/types";
 import type { WorkerResult } from "@/lib/extraction";
 
@@ -11,6 +13,7 @@ export function useColorExtraction() {
   const preview = useUploadStore((s) => s.preview);
   const setColors = usePaletteStore((s) => s.setColors);
   const setExtracting = usePaletteStore((s) => s.setExtracting);
+  const setMood = usePaletteStore((s) => s.setMood);
   const clear = usePaletteStore((s) => s.clear);
   const workerRef = useRef<Worker | null>(null);
 
@@ -43,7 +46,7 @@ export function useColorExtraction() {
         return resolve();
       }
       workerRef.current.onmessage = (e: MessageEvent<WorkerResult[]>) => {
-        const colors: ExtractedColor[] = e.data.map((r: WorkerResult) => {
+        const namedColors: ExtractedColor[] = e.data.map((r: WorkerResult) => {
           const rgb = hexToRgb(r.hex);
           const hsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
           const oklch = rgbToOklch(rgb.r, rgb.g, rgb.b);
@@ -54,10 +57,11 @@ export function useColorExtraction() {
             oklch,
             cssVar: hexToCssVar(r.hex),
             percentage: r.percentage,
-            name: "",
+            name: generateColorName(r.hex),
           };
         });
-        setColors(colors);
+        setColors(namedColors);
+        setMood(detectMood(namedColors));
         setExtracting(false);
         resolve();
       };
@@ -73,7 +77,7 @@ export function useColorExtraction() {
       };
       workerRef.current.postMessage(imageData);
     });
-  }, [preview, setColors, setExtracting, clear]);
+  }, [preview, setColors, setExtracting, setMood, clear]);
 
   useEffect(() => { extract(); }, [extract]);
 }

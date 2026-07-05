@@ -1,6 +1,8 @@
 import { UploadZone } from "@/components/upload/UploadZone";
 import { ImagePreview } from "@/components/upload/ImagePreview";
 import { Extractor } from "@/components/palette/Extractor";
+import { PaletteName } from "@/components/palette/PaletteName";
+import { MoodBadge } from "@/components/palette/MoodBadge";
 
 export default function Home() {
   return (
@@ -18,6 +20,8 @@ export default function Home() {
           <UploadZone />
           <ImagePreview />
           <Extractor />
+          <PaletteName />
+          <MoodBadge />
         </section>
       </div>
     </main>
