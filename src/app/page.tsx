@@ -1,7 +1,16 @@
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center">
-      <h1 className="text-4xl font-bold">Palette Studio</h1>
-    </div>
+    <main className="min-h-screen">
+      <div className="mx-auto max-w-6xl px-6 py-24">
+        <section className="mb-24 text-center">
+          <h1 className="font-display text-5xl font-bold tracking-tight sm:text-6xl">
+            Palette Studio
+          </h1>
+          <p className="mt-4 text-lg text-muted-foreground">
+            Discover the visual identity hidden inside every image.
+          </p>
+        </section>
+      </div>
+    </main>
   );
 }
