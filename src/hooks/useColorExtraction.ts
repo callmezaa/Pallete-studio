@@ -4,7 +4,8 @@ import { useEffect, useRef, useCallback } from "react";
 import { useUploadStore } from "@/store/upload-store";
 import { usePaletteStore } from "@/store/palette-store";
 import { hexToRgb, rgbToHsl, rgbToOklch, hexToCssVar } from "@/lib/colors";
-import type { ExtractedColor, WorkerResult } from "@/types";
+import type { ExtractedColor } from "@/types";
+import type { WorkerResult } from "@/lib/extraction";
 
 export function useColorExtraction() {
   const preview = useUploadStore((s) => s.preview);
@@ -36,8 +37,11 @@ export function useColorExtraction() {
     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
-    return new Promise<void>((resolve) => {
-      if (!workerRef.current) return resolve();
+    return new Promise<void>((resolve, reject) => {
+      if (!workerRef.current) {
+        setExtracting(false);
+        return resolve();
+      }
       workerRef.current.onmessage = (e: MessageEvent<WorkerResult[]>) => {
         const colors: ExtractedColor[] = e.data.map((r: WorkerResult) => {
           const rgb = hexToRgb(r.hex);
@@ -56,6 +60,16 @@ export function useColorExtraction() {
         setColors(colors);
         setExtracting(false);
         resolve();
+      };
+      workerRef.current.onerror = (err) => {
+        console.error("Worker error:", err);
+        setExtracting(false);
+        reject(err);
+      };
+      workerRef.current.onmessageerror = (err) => {
+        console.error("Worker message error:", err);
+        setExtracting(false);
+        reject(err);
       };
       workerRef.current.postMessage(imageData);
     });
