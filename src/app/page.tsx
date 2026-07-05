@@ -1,5 +1,6 @@
 import { UploadZone } from "@/components/upload/UploadZone";
 import { ImagePreview } from "@/components/upload/ImagePreview";
+import { Extractor } from "@/components/palette/Extractor";
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
         <section className="space-y-8">
           <UploadZone />
           <ImagePreview />
+          <Extractor />
         </section>
       </div>
     </main>
