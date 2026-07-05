@@ -44,7 +44,15 @@ export function hexToCssVar(hex: string): string {
   return `--color-${hex.replace("#", "").toLowerCase()}`;
 }
 
-export function formatColor(color: any, format: string): string {
+interface FormatColorInput {
+  hex: string;
+  rgb: { r: number; g: number; b: number };
+  hsl: { h: number; s: number; l: number };
+  oklch: { l: number; c: number; h: number };
+  cssVar: string;
+}
+
+export function formatColor(color: FormatColorInput, format: string): string {
   switch (format) {
     case "hex": return color.hex;
     case "rgb": return `rgb(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b})`;

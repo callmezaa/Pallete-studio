@@ -24,6 +24,7 @@ export function ColorCard({ color, index }: ColorCardProps) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.1 }}
+      onDoubleClick={() => togglePin(color.hex)}
       className="group relative overflow-hidden rounded-xl border border-border bg-card transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-black/20"
     >
       <div

@@ -1,6 +1,5 @@
 import { create } from "zustand";
-
-type GradientType = "linear" | "radial";
+import type { GradientType } from "@/constants";
 
 interface UIState {
   reducedMotion: boolean;

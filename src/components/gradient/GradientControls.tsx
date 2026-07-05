@@ -5,9 +5,8 @@ import { Copy, Check } from "lucide-react";
 import { usePaletteStore } from "@/store/palette-store";
 import { useUIStore } from "@/store/ui-store";
 import { generateCssGradient } from "@/lib/gradients";
+import { GRADIENT_TYPES } from "@/constants";
 import { cn } from "@/lib/utils";
-
-const GRADIENT_TYPES = ["linear", "radial"] as const;
 
 export function GradientControls() {
   const colors = usePaletteStore((s) => s.colors);
