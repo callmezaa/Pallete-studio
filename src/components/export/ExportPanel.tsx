@@ -65,11 +65,11 @@ export function ExportPanel() {
             {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
             {copied ? "Copied" : "Copy"}
           </button>
-          <button onClick={handleShare} className="flex items-center gap-1.5 rounded-lg bg-muted px-4 py-2 text-sm font-medium transition-colors hover:bg-accent">
-            <Copy className="h-4 w-4" /> Share Link
-          </button>
           <button onClick={handleDownload} className="flex items-center gap-1.5 rounded-lg bg-muted px-4 py-2 text-sm font-medium transition-colors hover:bg-accent">
             <Download className="h-4 w-4" /> Download
+          </button>
+          <button onClick={handleShare} className="flex items-center gap-1.5 rounded-lg bg-muted px-4 py-2 text-sm font-medium transition-colors hover:bg-accent">
+            <Copy className="h-4 w-4" /> Share Link
           </button>
         </div>
       </div>
