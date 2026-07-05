@@ -5,6 +5,7 @@ import { PaletteName } from "@/components/palette/PaletteName";
 import { MoodBadge } from "@/components/palette/MoodBadge";
 import { GradientPreview } from "@/components/gradient/GradientPreview";
 import { GradientControls } from "@/components/gradient/GradientControls";
+import { UIPreview } from "@/components/preview/UIPreview";
 
 export default function Home() {
   return (
@@ -26,6 +27,7 @@ export default function Home() {
           <MoodBadge />
           <GradientPreview />
           <GradientControls />
+          <UIPreview />
         </section>
       </div>
     </main>
