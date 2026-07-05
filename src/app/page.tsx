@@ -3,6 +3,8 @@ import { ImagePreview } from "@/components/upload/ImagePreview";
 import { Extractor } from "@/components/palette/Extractor";
 import { PaletteName } from "@/components/palette/PaletteName";
 import { MoodBadge } from "@/components/palette/MoodBadge";
+import { GradientPreview } from "@/components/gradient/GradientPreview";
+import { GradientControls } from "@/components/gradient/GradientControls";
 
 export default function Home() {
   return (
@@ -22,6 +24,8 @@ export default function Home() {
           <Extractor />
           <PaletteName />
           <MoodBadge />
+          <GradientPreview />
+          <GradientControls />
         </section>
       </div>
     </main>
