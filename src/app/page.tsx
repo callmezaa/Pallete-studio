@@ -1,3 +1,6 @@
+import { UploadZone } from "@/components/upload/UploadZone";
+import { ImagePreview } from "@/components/upload/ImagePreview";
+
 export default function Home() {
   return (
     <main className="min-h-screen">
@@ -9,6 +12,10 @@ export default function Home() {
           <p className="mt-4 text-lg text-muted-foreground">
             Discover the visual identity hidden inside every image.
           </p>
+        </section>
+        <section className="space-y-8">
+          <UploadZone />
+          <ImagePreview />
         </section>
       </div>
     </main>
