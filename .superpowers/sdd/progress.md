@@ -10,4 +10,5 @@ Task 4.1: complete (commit 5fbcae8, review clean — Extractor in separate file 
 Task 5.1: complete (commit 123f51f, review clean)
 Task 6.1: complete (commit ee21b78, review clean)
 Task 7.1: complete (commit a12e890, review clean)
+Task 8.1: complete (commit b56f015, review clean)
 
