@@ -1,3 +1,8 @@
+export interface WorkerResult {
+  hex: string;
+  percentage: number;
+}
+
 export interface ExtractedColor {
   hex: string;
   rgb: { r: number; g: number; b: number };
