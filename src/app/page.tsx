@@ -6,6 +6,7 @@ import { MoodBadge } from "@/components/palette/MoodBadge";
 import { GradientPreview } from "@/components/gradient/GradientPreview";
 import { GradientControls } from "@/components/gradient/GradientControls";
 import { UIPreview } from "@/components/preview/UIPreview";
+import { ExportPanel } from "@/components/export/ExportPanel";
 
 export default function Home() {
   return (
@@ -28,6 +29,7 @@ export default function Home() {
           <GradientPreview />
           <GradientControls />
           <UIPreview />
+          <ExportPanel />
         </section>
       </div>
     </main>
