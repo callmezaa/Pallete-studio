@@ -12,7 +12,7 @@ export function PaletteGrid() {
       <h2 className="mb-6 text-2xl font-semibold tracking-tight">Palette</h2>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
         {colors.map((color, i) => (
-          <ColorCard key={color.hex} color={color} index={i} />
+          <ColorCard key={`${color.hex}-${i}`} color={color} index={i} />
         ))}
       </div>
     </section>
