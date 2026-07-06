@@ -7,7 +7,13 @@ export function BadgePreview() {
   return (
     <div className="flex flex-wrap gap-2">
       {colors.slice(0, 4).map((c, i) => (
-        <span key={`${c.hex}-${i}`} className="inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium" style={{ backgroundColor: c.hex + "20", color: c.hex, borderColor: c.hex + "40" }}>{c.hex}</span>
+        <span
+          key={`${c.hex}-${i}`}
+          className="inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium transition-[scale] duration-200 ease-out hover:scale-105"
+          style={{ backgroundColor: c.hex + "20", color: c.hex, borderColor: c.hex + "40" }}
+        >
+          {c.hex}
+        </span>
       ))}
     </div>
   );

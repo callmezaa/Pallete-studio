@@ -39,3 +39,11 @@ export interface ExportState {
   data: string | null;
   isExporting: boolean;
 }
+
+export interface SavedPalette {
+  id: string;
+  timestamp: number;
+  colors: ExtractedColor[];
+  mood: string[];
+  dominantColor: string;
+}

@@ -1,17 +1,25 @@
 "use client";
 
 import { useCallback, useEffect } from "react";
-import { useDropzone } from "react-dropzone";
+import { useDropzone, type FileRejection } from "react-dropzone";
 import { useUploadStore } from "@/store/upload-store";
+import { useToastStore } from "@/store/toast-store";
 import { SUPPORTED_FORMATS, MAX_IMAGE_SIZE } from "@/constants";
 
 export function useImageUpload() {
   const setImage = useUploadStore((s) => s.setImage);
-  const setError = useUploadStore((s) => s.setError);
   const setUploading = useUploadStore((s) => s.setUploading);
+  const addToast = useToastStore((s) => s.addToast);
 
   const onDrop = useCallback(
-    async (acceptedFiles: File[]) => {
+    async (acceptedFiles: File[], rejections: FileRejection[]) => {
+      if (rejections.length > 0) {
+        const msg = rejections[0].errors[0];
+        if (msg.code === "file-too-large") addToast("Image must be under 10 MB", "error");
+        else if (msg.code === "file-invalid-type") addToast("Only PNG, JPEG, WebP, and GIF images are supported", "error");
+        else addToast(msg.message, "error");
+        return;
+      }
       const file = acceptedFiles[0];
       if (!file) return;
 
@@ -20,7 +28,7 @@ export function useImageUpload() {
       setImage(file, preview);
       setUploading(false);
     },
-    [setImage, setError, setUploading]
+    [setImage, setUploading, addToast]
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -40,14 +48,25 @@ export function useImageUpload() {
       for (const item of Array.from(items)) {
         if (item.type.startsWith("image/")) {
           const file = item.getAsFile();
-          if (file) onDrop([file]);
+          if (file) {
+            if (file.size > MAX_IMAGE_SIZE) {
+              addToast("Image must be under 10 MB", "error");
+              return;
+            }
+            const ext = `.${file.name?.split(".").pop()?.toLowerCase() || ""}`;
+            if (!SUPPORTED_FORMATS.some((f) => f === file.type || f === ext)) {
+              addToast("Only PNG, JPEG, WebP, and GIF images are supported", "error");
+              return;
+            }
+            onDrop([file], []);
+          }
           break;
         }
       }
     };
     document.addEventListener("paste", handlePaste);
     return () => document.removeEventListener("paste", handlePaste);
-  }, [onDrop]);
+  }, [onDrop, addToast]);
 
   return { getRootProps, getInputProps, isDragActive };
 }

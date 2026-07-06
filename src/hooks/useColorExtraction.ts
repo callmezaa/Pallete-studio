@@ -3,6 +3,8 @@
 import { useEffect, useRef, useCallback } from "react";
 import { useUploadStore } from "@/store/upload-store";
 import { usePaletteStore } from "@/store/palette-store";
+import { useToastStore } from "@/store/toast-store";
+import { useHistoryStore } from "@/store/history-store";
 import { hexToRgb, rgbToHsl, rgbToOklch, hexToCssVar } from "@/lib/colors";
 import { generateColorName } from "@/lib/naming";
 import { detectMood } from "@/lib/mood";
@@ -15,6 +17,9 @@ export function useColorExtraction() {
   const setExtracting = usePaletteStore((s) => s.setExtracting);
   const setMood = usePaletteStore((s) => s.setMood);
   const clear = usePaletteStore((s) => s.clear);
+
+  const addToast = useToastStore((s) => s.addToast);
+  const addHistory = useHistoryStore((s) => s.addPalette);
 
   const extract = useCallback(() => {
     if (!preview) { clear(); return; }
@@ -48,16 +53,18 @@ export function useColorExtraction() {
         };
       });
 
+      const mood = detectMood(namedColors);
       setColors(namedColors);
-      setMood(detectMood(namedColors));
+      setMood(mood);
+      addHistory({ colors: namedColors, mood, dominantColor: namedColors[0]?.hex ?? "" });
       setExtracting(false);
     };
 
     img.onerror = () => {
-      console.error("Failed to load image for extraction");
+      addToast("Failed to extract colors. Try a different image.", "error");
       setExtracting(false);
     };
-  }, [preview, setColors, setExtracting, setMood, clear]);
+  }, [preview, setColors, setExtracting, setMood, clear, addToast, addHistory]);
 
   useEffect(() => { extract(); }, [extract]);
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { usePaletteStore } from "@/store/palette-store";
 import { cn } from "@/lib/utils";
 
@@ -18,26 +18,40 @@ const moodColors: Record<string, string> = {
   cold: "bg-cyan-500/10 text-cyan-500 border-cyan-500/20",
 };
 
+const badgeVariants = {
+  hidden: { opacity: 0, scale: 0.25, filter: "blur(4px)" },
+  visible: (i: number) => ({
+    opacity: 1, scale: 1, filter: "blur(0px)",
+    transition: { type: "spring", duration: 0.3, bounce: 0, delay: i * 0.05 } as const,
+  }),
+  exit: { opacity: 0, scale: 0.25, filter: "blur(4px)", transition: { duration: 0.15, ease: "easeIn" } as const },
+};
+
 export function MoodBadge() {
   const mood = usePaletteStore((s) => s.mood);
   if (mood.length === 0) return null;
 
   return (
     <div className="flex flex-wrap gap-2">
-      {mood.map((m, i) => (
-        <motion.span
-          key={m}
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: i * 0.05 }}
-          className={cn(
-            "inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium capitalize",
-            moodColors[m] ?? "bg-muted text-muted-foreground border-border"
-          )}
-        >
-          {m}
-        </motion.span>
-      ))}
+      <AnimatePresence mode="popLayout">
+        {mood.map((m, i) => (
+          <motion.span
+            key={m}
+            custom={i}
+            variants={badgeVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            layout
+            className={cn(
+              "inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium capitalize backdrop-blur-sm",
+              moodColors[m] ?? "bg-muted text-muted-foreground border-border"
+            )}
+          >
+            {m}
+          </motion.span>
+        ))}
+      </AnimatePresence>
     </div>
   );
 }

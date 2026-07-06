@@ -10,7 +10,7 @@ export type ColorFormat = (typeof COLOR_FORMATS)[number];
 export const GRADIENT_TYPES = ["linear", "radial", "mesh", "soft-blur"] as const;
 export type GradientType = (typeof GRADIENT_TYPES)[number];
 
-export const EXPORT_FORMATS = ["css", "tailwind", "json", "scss", "tokens"] as const;
+export const EXPORT_FORMATS = ["css", "tailwind", "json", "scss", "tokens", "png"] as const;
 export type ExportFormat = (typeof EXPORT_FORMATS)[number];
 
 export const MOODS = [
