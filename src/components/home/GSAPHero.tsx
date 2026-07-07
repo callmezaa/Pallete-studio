@@ -104,11 +104,12 @@ export function GSAPHero() {
   return (
     <section
       ref={containerRef}
-      className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden text-center"
+      className="relative flex min-h-screen flex-col items-center overflow-hidden text-center"
     >
       <FloatingBlobs />
       <ParticleField />
 
+      <div className="flex-[0.7]" />
       <div className="relative z-10 mx-auto max-w-3xl px-6">
         <span
           ref={badgeRef}
@@ -141,10 +142,11 @@ export function GSAPHero() {
         </div>
       </div>
 
+      <div className="flex-[1.3]" />
       {!scrolled && !reduced && (
         <div
           ref={scrollRef}
-          className="mt-auto flex flex-col items-center gap-2 pb-8"
+          className="flex flex-col items-center gap-2 pb-8"
         >
           <span className="text-[9px] font-medium tracking-[0.2em] uppercase text-white/15">
             Scroll
