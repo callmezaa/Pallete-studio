@@ -23,7 +23,7 @@ function Backbone({ points, colors, totalHeight }: {
   const geometry = useMemo(() => {
     const pts = points.map((p) => new THREE.Vector3(p.x, p.y, p.z));
     const curve = new THREE.CatmullRomCurve3(pts);
-    const geo = new THREE.TubeGeometry(curve, 64, 0.1, 6, false);
+    const geo = new THREE.TubeGeometry(curve, 80, 0.14, 8, false);
     const pos = geo.attributes.position;
     const cols = new Float32Array(pos.count * 3);
     const c0 = new THREE.Color();
@@ -52,9 +52,10 @@ function Backbone({ points, colors, totalHeight }: {
     <mesh geometry={geometry}>
       <meshPhysicalMaterial
         vertexColors
-        roughness={0.2}
-        metalness={0.3}
-        emissiveIntensity={0.15}
+        roughness={0.15}
+        metalness={0.4}
+        emissiveIntensity={0.2}
+        clearcoat={0.1}
       />
     </mesh>
   );
@@ -75,11 +76,13 @@ function Rung({ leftX, rightX, leftZ, rightZ, y, thickness, hex }: {
 
   return (
     <mesh position={mid} quaternion={quat}>
-      <cylinderGeometry args={[thickness * 0.5, thickness * 0.5, length, 6]} />
+      <cylinderGeometry args={[thickness * 0.5, thickness * 0.5, length, 8]} />
       <meshPhysicalMaterial
         color={hex}
-        roughness={0.25}
-        metalness={0.15}
+        roughness={0.2}
+        metalness={0.2}
+        emissive={hex}
+        emissiveIntensity={0.08}
       />
     </mesh>
   );
@@ -91,22 +94,83 @@ function Node({ x, y, z, hex, onHover }: {
   onHover: (hex: string | null) => void;
 }) {
   const [hovered, setHovered] = useState(false);
+  const meshRef = useRef<THREE.Mesh>(null);
+
+  useEffect(() => {
+    if (meshRef.current && hovered) {
+      document.body.style.cursor = "pointer";
+    } else {
+      document.body.style.cursor = "default";
+    }
+    return () => { document.body.style.cursor = "default"; };
+  }, [hovered]);
 
   return (
     <mesh
+      ref={meshRef}
       position={[x, y, z]}
       onPointerOver={(e) => { e.stopPropagation(); setHovered(true); onHover(hex); }}
       onPointerOut={() => { setHovered(false); onHover(null); }}
     >
-      <sphereGeometry args={[0.22, 16, 16]} />
+      <sphereGeometry args={[0.3, 20, 20]} />
       <meshPhysicalMaterial
         color={hex}
         emissive={hex}
-        emissiveIntensity={hovered ? 0.8 : 0.3}
-        roughness={0.1}
-        metalness={0.3}
+        emissiveIntensity={hovered ? 1.0 : 0.35}
+        roughness={0.05}
+        metalness={0.5}
+        clearcoat={0.2}
       />
     </mesh>
+  );
+}
+
+function GroundRing() {
+  return (
+    <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -5.8, 0]}>
+      <ringGeometry args={[1.5, 3.5, 64]} />
+      <meshBasicMaterial
+        color="#ffffff"
+        transparent
+        opacity={0.04}
+        side={THREE.DoubleSide}
+        depthWrite={false}
+      />
+    </mesh>
+  );
+}
+
+function AmbientParticles() {
+  const count = 120;
+  const positions = useMemo(() => {
+    const pos = new Float32Array(count * 3);
+    for (let i = 0; i < count; i++) {
+      const theta = Math.random() * Math.PI * 2;
+      const r = 2 + Math.random() * 4;
+      pos[i * 3] = Math.cos(theta) * r;
+      pos[i * 3 + 1] = (Math.random() - 0.5) * 10;
+      pos[i * 3 + 2] = Math.sin(theta) * r;
+    }
+    return pos;
+  }, []);
+
+  return (
+    <points>
+      <bufferGeometry>
+        <bufferAttribute
+          attach="attributes-position"
+          args={[positions, 3]}
+        />
+      </bufferGeometry>
+      <pointsMaterial
+        size={0.04}
+        color="#ffffff"
+        transparent
+        opacity={0.2}
+        sizeAttenuation
+        depthWrite={false}
+      />
+    </points>
   );
 }
 
@@ -118,7 +182,7 @@ function SceneInner({ onReady, onHover, reduced }: {
   const colors = usePaletteStore((s) => s.colors);
   const { gl, scene, camera } = useThree();
   const controlsRef = useRef<any>(null);
-  const data = useMemo(() => getHelixData3D({ colors }), [colors]);
+  const data = useMemo(() => getHelixData3D({ colors, amplitude: 2.5, depth: 2 }), [colors]);
   const totalHeight = 10;
 
   useEffect(() => {
@@ -130,18 +194,28 @@ function SceneInner({ onReady, onHover, reduced }: {
       <OrbitControls
         ref={controlsRef}
         autoRotate={!reduced}
-        autoRotateSpeed={0.5}
+        autoRotateSpeed={0.4}
         enableDamping
-        dampingFactor={0.05}
-        minDistance={4}
-        maxDistance={25}
+        dampingFactor={0.06}
+        minDistance={5}
+        maxDistance={30}
       />
 
-      <ambientLight intensity={0.4} />
-      <pointLight position={[10, 10, 10]} intensity={0.6} />
-      <pointLight position={[-10, -10, -10]} intensity={0.3} />
+      {/* Ambient */}
+      <ambientLight intensity={0.3} />
+      <hemisphereLight args={["#6366f1", "#1a1a2e", 0.4]} />
 
-      <Float speed={reduced ? 0 : 0.5} floatIntensity={reduced ? 0 : 2} rotationIntensity={reduced ? 0 : 0.2}>
+      {/* Key light — warm, from upper-right */}
+      <pointLight position={[8, 6, 4]} intensity={0.8} color="#ffeedd" />
+      {/* Fill light — cool, from lower-left */}
+      <pointLight position={[-6, -4, 6]} intensity={0.4} color="#6688ff" />
+      {/* Rim light — from behind */}
+      <pointLight position={[0, 2, -10]} intensity={0.6} color="#ffffff" />
+
+      <GroundRing />
+      <AmbientParticles />
+
+      <Float speed={reduced ? 0 : 0.4} floatIntensity={reduced ? 0 : 1.5} rotationIntensity={reduced ? 0 : 0.15}>
         <Backbone points={data.leftPoints} colors={colors} totalHeight={totalHeight} />
         <Backbone points={data.rightPoints} colors={colors} totalHeight={totalHeight} />
 
@@ -159,7 +233,7 @@ function SceneInner({ onReady, onHover, reduced }: {
 
       {!reduced && (
         <EffectComposer>
-          <Bloom luminanceThreshold={0.1} luminanceStrength={0.25} radius={0.5} />
+          <Bloom luminanceThreshold={0.08} luminanceStrength={0.35} radius={0.6} />
         </EffectComposer>
       )}
     </>
@@ -195,7 +269,7 @@ export function DnaHelix({ exportRef, onHover }: DnaHelixProps) {
 
   return (
     <Canvas
-      camera={{ position: [0, 1, 12], fov: 45 }}
+      camera={{ position: [3, 1.5, 11], fov: 38 }}
       gl={{ alpha: true, preserveDrawingBuffer: true }}
       style={{ width: "100%", height: "100%" }}
       aria-label="3D DNA helix visualization of color palette"

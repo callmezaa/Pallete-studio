@@ -7,7 +7,7 @@ import { useToastStore } from "@/store/toast-store";
 import { useCopyToClipboard } from "@/hooks/useCopyToClipboard";
 import { DnaHelix } from "./DnaHelix";
 import { cn } from "@/lib/utils";
-import { Check, Copy, Download } from "lucide-react";
+import { Check, Copy, Download, Dna } from "lucide-react";
 
 export function DnaArt() {
   const colors = usePaletteStore((s) => s.colors);
@@ -46,13 +46,25 @@ export function DnaArt() {
   return (
     <div
       className={cn(
-        "rounded-xl p-6",
+        "overflow-hidden rounded-2xl",
         "bg-white/[0.03] backdrop-blur-xl",
-        "shadow-[0_0_0_1px_rgba(255,255,255,0.06)_inset]",
+        "shadow-[0_0_0_1px_rgba(255,255,255,0.06)_inset,0_8px_32px_rgba(0,0,0,0.2)]",
       )}
     >
-      <div className="mb-4 flex items-center justify-between">
-        <h3 className="text-sm font-medium text-foreground">DNA</h3>
+      <div className="flex items-center justify-between px-6 pt-5 pb-1">
+        <div className="flex items-center gap-2.5">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/[0.04]">
+            <Dna className="h-4 w-4 text-muted-foreground" />
+          </div>
+          <div>
+            <h3 className="text-sm font-semibold tracking-tight text-foreground">
+              DNA Helix
+            </h3>
+            <p className="text-[11px] text-muted-foreground/60">
+              Interactive 3D visualization of your palette
+            </p>
+          </div>
+        </div>
         <div className="flex gap-2">
           <button
             onClick={handleDownload}
@@ -103,13 +115,24 @@ export function DnaArt() {
         </div>
       </div>
 
-      <div className="relative mx-auto max-w-[320px]">
+      <div className="relative mt-2 h-[480px] w-full">
+        {/* Subtle vignette overlay */}
+        <div className="pointer-events-none absolute inset-0 z-10 rounded-b-2xl bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(0,0,0,0.3)_100%)]" />
+
         <DnaHelix exportRef={exportRef} onHover={setHoveredHex} />
+
         {hoveredHex && (
-          <div className="pointer-events-none absolute bottom-3 left-1/2 z-10 -translate-x-1/2 rounded-lg border border-white/[0.08] bg-white/[0.06] px-3 py-1 font-mono text-xs text-foreground/80 backdrop-blur-xl">
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="pointer-events-none absolute bottom-5 left-1/2 z-20 -translate-x-1/2 rounded-xl border border-white/[0.08] bg-black/40 px-4 py-2 font-mono text-sm tracking-tight text-foreground/90 backdrop-blur-2xl"
+          >
             {hoveredHex}
-          </div>
+          </motion.div>
         )}
+
+        {/* Bottom gradient edge */}
+        <div className="pointer-events-none absolute bottom-0 left-0 right-0 z-10 h-12 bg-gradient-to-t from-background/40 to-transparent" />
       </div>
     </div>
   );
