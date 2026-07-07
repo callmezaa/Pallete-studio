@@ -146,7 +146,7 @@ export function GSAPHero() {
       {!scrolled && !reduced && (
         <div
           ref={scrollRef}
-          className="flex flex-col items-center gap-2 pb-8"
+          className="fixed bottom-8 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2"
         >
           <span className="text-[9px] font-medium tracking-[0.2em] uppercase text-white/15">
             Scroll
