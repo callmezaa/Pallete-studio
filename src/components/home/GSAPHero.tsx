@@ -144,15 +144,13 @@ export function GSAPHero() {
       {!scrolled && !reduced && (
         <div
           ref={scrollRef}
-          className="absolute bottom-10 left-1/2 z-10 -translate-x-1/2"
+          className="mt-auto flex flex-col items-center gap-2 pb-8"
         >
-          <div className="flex flex-col items-center gap-3">
-            <span className="text-[10px] font-medium tracking-[1.5px] uppercase text-white/20">
-              Scroll
-            </span>
-            <div className="flex h-7 w-4 items-start justify-center rounded-full border border-white/15 p-[3px]">
-              <div className="h-1.5 w-[2.5px] animate-[scrollBounce_1.8s_ease-in-out_infinite] rounded-full bg-white/30" />
-            </div>
+          <span className="text-[9px] font-medium tracking-[0.2em] uppercase text-white/15">
+            Scroll
+          </span>
+          <div className="relative flex h-10 w-[1px] items-start justify-center overflow-hidden bg-gradient-to-b from-white/0 via-white/20 to-white/0">
+            <div className="h-1 w-1 animate-[scrollDot_2.2s_ease-in-out_infinite] rounded-full bg-white/60 shadow-[0_0_6px_rgba(255,255,255,0.3)]" />
           </div>
         </div>
       )}

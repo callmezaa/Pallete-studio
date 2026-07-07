@@ -48,9 +48,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-@keyframes scrollBounce {
-  0%, 100% { transform: translateY(0); opacity: 0.3; }
-  50% { transform: translateY(6px); opacity: 1; }
+@keyframes scrollDot {
+  0% { transform: translateY(-6px); opacity: 0; }
+  30% { transform: translateY(0); opacity: 1; }
+  70% { transform: translateY(28px); opacity: 1; }
+  100% { transform: translateY(36px); opacity: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
