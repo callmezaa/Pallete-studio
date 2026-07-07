@@ -104,7 +104,7 @@ export function GSAPHero() {
   return (
     <section
       ref={containerRef}
-      className="relative flex min-h-screen flex-col items-center overflow-hidden text-center"
+      className="relative flex min-h-screen flex-col items-center text-center"
     >
       <FloatingBlobs />
       <ParticleField />
@@ -146,7 +146,7 @@ export function GSAPHero() {
       {!scrolled && !reduced && (
         <div
           ref={scrollRef}
-          className="fixed bottom-8 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2"
+          className="absolute bottom-8 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2"
         >
           <span className="text-[9px] font-medium tracking-[0.2em] uppercase text-white/15">
             Scroll
