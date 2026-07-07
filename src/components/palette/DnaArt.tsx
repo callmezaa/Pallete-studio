@@ -1,58 +1,47 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useCallback } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { usePaletteStore } from "@/store/palette-store";
 import { useToastStore } from "@/store/toast-store";
 import { useCopyToClipboard } from "@/hooks/useCopyToClipboard";
-import { getHelixData, smoothPath } from "@/lib/dna";
+import { DnaHelix } from "./DnaHelix";
 import { cn } from "@/lib/utils";
 import { Check, Copy, Download } from "lucide-react";
-
-const GLOW_FILTER = (
-  <filter id="dna-glow" x="-50%" y="-50%" width="200%" height="200%">
-    <feGaussianBlur in="SourceGraphic" stdDeviation="2.5" result="blur" />
-    <feMerge>
-      <feMergeNode in="blur" />
-      <feMergeNode in="SourceGraphic" />
-    </feMerge>
-  </filter>
-);
 
 export function DnaArt() {
   const colors = usePaletteStore((s) => s.colors);
   const addToast = useToastStore((s) => s.addToast);
   const { copied, copy } = useCopyToClipboard();
-  const svgRef = useRef<SVGSVGElement>(null);
+  const exportRef = useRef<(() => Promise<string | null>) | null>(null);
+  const [hoveredHex, setHoveredHex] = useState<string | null>(null);
 
   if (colors.length === 0) return null;
 
-  const data = getHelixData({ colors });
-
-  const handleDownload = () => {
-    const el = svgRef.current;
-    if (!el) return;
-    const svgString = new XMLSerializer().serializeToString(el);
-    const blob = new Blob([svgString], { type: "image/svg+xml" });
-    const url = URL.createObjectURL(blob);
+  const handleDownload = useCallback(async () => {
+    const dataUrl = await exportRef.current?.();
+    if (!dataUrl) return;
     const a = document.createElement("a");
-    a.href = url;
-    a.download = "palette-dna.svg";
+    a.href = dataUrl;
+    a.download = "palette-dna-3d.png";
     a.click();
-    URL.revokeObjectURL(url);
     addToast("DNA downloaded", "success");
-  };
+  }, [addToast]);
 
-  const handleCopySvg = () => {
-    const el = svgRef.current;
-    if (!el) return;
-    const svgString = new XMLSerializer().serializeToString(el);
-    navigator.clipboard.writeText(svgString);
-    copy(svgString, "dna-svg");
-    addToast("SVG copied to clipboard", "success");
-  };
-
-  const backboneGradId = "dna-backbone-grad";
+  const handleCopyPng = useCallback(async () => {
+    const dataUrl = await exportRef.current?.();
+    if (!dataUrl) return;
+    const blob = await fetch(dataUrl).then((r) => r.blob());
+    try {
+      await navigator.clipboard.write([
+        new ClipboardItem({ "image/png": blob }),
+      ]);
+      copy("png", "dna-png");
+      addToast("PNG copied to clipboard", "success");
+    } catch {
+      addToast("Failed to copy image", "error");
+    }
+  }, [addToast, copy]);
 
   return (
     <div
@@ -74,10 +63,10 @@ export function DnaArt() {
             )}
           >
             <Download className="h-3.5 w-3.5" />
-            SVG
+            PNG
           </button>
           <AnimatePresence initial={false} mode="popLayout">
-            {copied === "dna-svg" ? (
+            {copied === "dna-png" ? (
               <motion.span
                 key="check"
                 initial={{ opacity: 0, scale: 0.25, filter: "blur(4px)" }}
@@ -99,7 +88,7 @@ export function DnaArt() {
                 animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
                 exit={{ opacity: 0, scale: 0.25, filter: "blur(4px)" }}
                 transition={{ type: "spring", duration: 0.3, bounce: 0 }}
-                onClick={handleCopySvg}
+                onClick={handleCopyPng}
                 className={cn(
                   "flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium",
                   "transition-[background-color,color,transform] duration-150 ease-out",
@@ -107,87 +96,20 @@ export function DnaArt() {
                 )}
               >
                 <Copy className="h-3.5 w-3.5" />
-                Copy SVG
+                Copy PNG
               </motion.button>
             )}
           </AnimatePresence>
         </div>
       </div>
 
-      <div className="mx-auto max-w-[260px]">
-        <svg
-          ref={svgRef}
-          viewBox="0 0 300 500"
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-auto w-full"
-        >
-          <defs>
-            {GLOW_FILTER}
-            <linearGradient id={backboneGradId} x1="0" y1="0" x2="0" y2="1">
-              {colors.map((c, i) => (
-                <stop
-                  key={i}
-                  offset={`${(i / (colors.length - 1 || 1)) * 100}%`}
-                  stopColor={c.hex}
-                  stopOpacity="0.25"
-                />
-              ))}
-            </linearGradient>
-          </defs>
-
-          {/* Connecting lines between consecutive same-side nodes */}
-          {data.bars.slice(0, -1).map((bar, i) => (
-            <g key={`conn-${i}`}>
-              <line
-                x1={bar.leftX} y1={bar.y}
-                x2={data.bars[i + 1].leftX} y2={data.bars[i + 1].y}
-                stroke="rgba(255,255,255,0.04)" strokeWidth="1"
-              />
-              <line
-                x1={bar.rightX} y1={bar.y}
-                x2={data.bars[i + 1].rightX} y2={data.bars[i + 1].y}
-                stroke="rgba(255,255,255,0.04)" strokeWidth="1"
-              />
-            </g>
-          ))}
-
-          {/* Backbones */}
-          <path
-            d={smoothPath(data.leftPoints)}
-            fill="none"
-            stroke={`url(#${backboneGradId})`}
-            strokeWidth="2"
-          />
-          <path
-            d={smoothPath(data.rightPoints)}
-            fill="none"
-            stroke={`url(#${backboneGradId})`}
-            strokeWidth="2"
-          />
-
-          {/* Bars */}
-          {data.bars.map((bar, i) => (
-            <g key={`bar-${i}`}>
-              <line
-                x1={bar.leftX} y1={bar.y}
-                x2={bar.rightX} y2={bar.y}
-                stroke={bar.hex}
-                strokeWidth={bar.thickness}
-                strokeLinecap="round"
-                opacity="0.15"
-              />
-              <line
-                x1={bar.leftX} y1={bar.y}
-                x2={bar.rightX} y2={bar.y}
-                stroke={bar.hex}
-                strokeWidth={bar.thickness * 0.5}
-                strokeLinecap="round"
-              />
-              <circle cx={bar.leftX} cy={bar.y} r="4" fill={bar.hex} filter="url(#dna-glow)" />
-              <circle cx={bar.rightX} cy={bar.y} r="4" fill={bar.hex} filter="url(#dna-glow)" />
-            </g>
-          ))}
-        </svg>
+      <div className="relative mx-auto max-w-[320px]">
+        <DnaHelix exportRef={exportRef} onHover={setHoveredHex} />
+        {hoveredHex && (
+          <div className="pointer-events-none absolute bottom-3 left-1/2 z-10 -translate-x-1/2 rounded-lg border border-white/[0.08] bg-white/[0.06] px-3 py-1 font-mono text-xs text-foreground/80 backdrop-blur-xl">
+            {hoveredHex}
+          </div>
+        )}
       </div>
     </div>
   );
