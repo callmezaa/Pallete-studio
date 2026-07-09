@@ -40,6 +40,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# superpowers tooling
+.superpowers/
+
 # windows reserved names (created by 2>nul redirect in bash)
 nul
 NUL
