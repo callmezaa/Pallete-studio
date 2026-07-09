@@ -15,10 +15,10 @@ export function UploadZone() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ type: "spring", duration: 0.6, bounce: 0 }}
       className={cn(
-        "group relative cursor-pointer overflow-hidden rounded-2xl p-16 text-center",
+        "group relative cursor-pointer overflow-hidden rounded-xl p-16 text-center",
         "transition-[scale,box-shadow,background-color] duration-300 ease-out",
         "active:scale-[0.98]",
-        "bg-white/[0.02] backdrop-blur-xl",
+        "bg-white/[0.03] backdrop-blur-xl",
         isDragActive
           ? "bg-white/[0.06] shadow-[0_0_0_1px_rgba(255,255,255,0.2)_inset,0_0_40px_rgba(255,255,255,0.04)]"
           : "shadow-[0_0_0_1px_rgba(255,255,255,0.06)_inset] hover:shadow-[0_0_0_1px_rgba(255,255,255,0.12)_inset]"
@@ -89,7 +89,7 @@ export function UploadZone() {
               <p className="mt-1 text-sm text-muted-foreground">
                 or click to browse · PNG, JPG, WEBP up to 10MB
               </p>
-              <p className="mt-2 text-xs text-muted-foreground">
+              <p className="mt-2 text-xs sm:text-sm text-muted-foreground">
                 or press{" "}
                 <kbd className="rounded bg-white/[0.06] px-1.5 py-0.5 font-mono text-[11px]">
                   ⌘V

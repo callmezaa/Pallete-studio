@@ -33,7 +33,7 @@ export function RelationshipMap() {
       )}
     >
       <div className="mb-4 flex items-center justify-between">
-        <h3 className="text-sm font-medium text-foreground">
+        <h3 className="text-base font-semibold text-foreground text-balance">
           Color Relationship Map
         </h3>
         <div className="relative flex rounded-full bg-white/[0.04] p-0.5">
@@ -135,7 +135,7 @@ export function RelationshipMap() {
                   className="inline-block h-2 w-4 rounded-sm"
                   style={{ backgroundColor: RELATIONSHIP_COLORS[type] }}
                 />
-                {type.replace("-", " ")} · {count}
+                {type.replace("-", " ")} · <span className="tabular-nums">{count}</span>
               </span>
             );
           })}

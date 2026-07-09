@@ -43,7 +43,7 @@ export default function HistoryPage() {
             Home
           </Link>
 
-          <h1 className="text-lg font-semibold tracking-tight">History</h1>
+          <h1 className="text-lg font-semibold tracking-tight text-balance">History</h1>
 
           {palettes.length > 0 && (
             <button
@@ -65,7 +65,7 @@ export default function HistoryPage() {
             <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-white/[0.04]">
               <Clock className="h-8 w-8 text-muted-foreground/40" />
             </div>
-            <h2 className="text-lg font-medium text-foreground">No saved palettes yet</h2>
+            <h2 className="text-lg font-medium text-foreground text-balance">No saved palettes yet</h2>
             <p className="mt-1 text-sm text-muted-foreground">
               Extract colors on the home page and they&apos;ll appear here.
             </p>
@@ -113,7 +113,7 @@ export default function HistoryPage() {
               </motion.div>
             </AnimatePresence>
 
-            <p className="mt-10 text-center text-xs text-muted-foreground/50">
+            <p className="mt-10 text-center text-xs text-muted-foreground/50 tabular-nums">
               Showing {palettes.length} {palettes.length === 1 ? "palette" : "palettes"}
             </p>
           </>

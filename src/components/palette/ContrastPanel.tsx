@@ -55,7 +55,7 @@ export function ContrastPanel() {
 
   return (
     <div className="rounded-xl bg-white/[0.03] p-6 shadow-[0_0_0_1px_rgba(255,255,255,0.06)_inset] backdrop-blur-xl">
-      <h3 className="text-sm font-medium text-foreground">Contrast Checker</h3>
+      <h3 className="text-base font-semibold text-foreground text-balance">Contrast Checker</h3>
 
       {colors.length < 2 ? (
         <p className="mt-3 text-sm text-muted-foreground">

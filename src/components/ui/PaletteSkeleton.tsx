@@ -3,7 +3,7 @@
 export function PaletteSkeleton() {
   return (
     <section>
-      <h2 className="mb-6 text-2xl font-semibold tracking-tight">Palette</h2>
+      <h2 className="mb-6 text-2xl font-semibold tracking-tight text-balance">Palette</h2>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
         {Array.from({ length: 5 }).map((_, i) => (
           <div key={i} className="animate-pulse rounded-xl bg-white/[0.03] shadow-[0_0_0_1px_rgba(255,255,255,0.06)_inset]">

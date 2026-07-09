@@ -47,7 +47,7 @@ export function HistoryPanel() {
   return (
     <section>
       <div className="mb-4 flex items-center justify-between">
-        <h2 className="flex items-center gap-2 text-lg font-semibold tracking-tight">
+        <h2 className="flex items-center gap-2 text-2xl font-semibold tracking-tight text-balance">
           <Clock className="h-4 w-4 text-muted-foreground" />
           Previously Extracted
         </h2>
@@ -107,7 +107,7 @@ export function HistoryPanel() {
                       <span className="font-mono text-xs tabular-nums text-muted-foreground">
                         {p.colors[0]?.hex}
                       </span>
-                      <span className="text-[10px] text-muted-foreground/60">
+                      <span className="text-[10px] text-muted-foreground/60 tabular-nums">
                         {relativeTime(p.timestamp)}
                       </span>
                     </div>

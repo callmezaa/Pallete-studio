@@ -73,7 +73,7 @@ export function HistoryCard({ palette }: HistoryCardProps) {
         "group relative overflow-hidden rounded-xl",
         "bg-white/[0.03] backdrop-blur-xl",
         "shadow-[0_0_0_1px_rgba(255,255,255,0.06)_inset]",
-        "hover:scale-[1.02] active:scale-[0.98] touch-manipulation",
+        "hover:scale-[1.02] active:scale-[0.96] touch-manipulation",
         "hover:shadow-[0_0_0_1px_rgba(255,255,255,0.12)_inset,0_8px_24px_rgba(0,0,0,0.3)]",
       )}
     >
@@ -90,7 +90,7 @@ export function HistoryCard({ palette }: HistoryCardProps) {
       <div className="p-4">
         <div className="flex items-center justify-between">
           <span className="font-mono text-sm tabular-nums">{palette.colors[0]?.hex}</span>
-          <span className="text-xs text-muted-foreground/60">{relativeTime(palette.timestamp)}</span>
+          <span className="text-xs text-muted-foreground/60 tabular-nums">{relativeTime(palette.timestamp)}</span>
         </div>
 
         {palette.mood.length > 0 && (

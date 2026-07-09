@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Inter } from "next/font/google";
 import { ThemeBackground } from "@/components/ui/ThemeBackground";
 import { ToastContainer } from "@/components/ui/ToastContainer";
 import { ShortcutLayer } from "@/components/ui/ShortcutLayer";
+import { ScrollToTop } from "@/components/ui/ScrollToTop";
 import "./globals.css";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
@@ -40,6 +41,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {children}
         <ToastContainer />
         <ShortcutLayer />
+        <ScrollToTop />
       </body>
     </html>
   );

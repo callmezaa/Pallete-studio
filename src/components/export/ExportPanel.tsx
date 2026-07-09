@@ -156,7 +156,7 @@ export function ExportPanel() {
 
   return (
     <section>
-      <h2 className="mb-6 text-2xl font-semibold tracking-tight">Export</h2>
+      <h2 className="mb-6 text-2xl font-semibold tracking-tight text-balance">Export</h2>
       <div
         className={cn(
           "rounded-xl p-6",

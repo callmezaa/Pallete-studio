@@ -36,7 +36,7 @@ export default function SharePalettePage({ params }: SharePageProps) {
       <div className="mx-auto max-w-6xl px-6 py-24">
         <section className="mb-12 flex items-center justify-between">
           <div>
-            <h1 className="text-4xl font-bold tracking-tight">Shared Palette</h1>
+            <h1 className="text-4xl font-bold tracking-tight text-balance">Shared Palette</h1>
             <PaletteName />
           </div>
           <MoodBadge />

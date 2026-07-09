@@ -200,7 +200,7 @@ export function CommandPalette({
             transition={{ type: "spring", duration: 0.4, bounce: 0 }}
             onClick={(e) => e.stopPropagation()}
             className={cn(
-              "relative w-full max-w-lg overflow-hidden rounded-2xl",
+              "relative w-full max-w-lg overflow-hidden rounded-xl",
               "border border-white/[0.08] bg-black/80 backdrop-blur-2xl",
               "shadow-[0_0_0_1px_rgba(255,255,255,0.06)_inset,0_20px_60px_rgba(0,0,0,0.5)]",
             )}

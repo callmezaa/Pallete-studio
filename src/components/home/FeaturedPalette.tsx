@@ -9,7 +9,7 @@ export function FeaturedPalette() {
 
   return (
     <section className="mx-auto max-w-5xl px-6">
-      <div className="overflow-hidden rounded-2xl bg-white/[0.03] shadow-[0_0_0_1px_rgba(255,255,255,0.06)_inset] backdrop-blur-xl">
+      <div className="overflow-hidden rounded-xl bg-white/[0.03] shadow-[0_0_0_1px_rgba(255,255,255,0.06)_inset] backdrop-blur-xl">
         <div className="flex">
           {colors.map((c, i) => (
             <div

@@ -68,7 +68,7 @@ export function ColorCard({ color }: ColorCardProps) {
         "bg-white/[0.03] backdrop-blur-xl",
         "transition-[scale,box-shadow] duration-300 ease-out",
         "hover:scale-[1.02]",
-        "active:scale-[0.98]",
+        "active:scale-[0.96]",
         "cursor-grab active:cursor-grabbing touch-manipulation",
         isPinned
           ? "shadow-[0_0_0_1px_rgba(255,255,255,0.15),0_4px_12px_-4px_rgba(0,0,0,0.4),0_8px_24px_0_rgba(0,0,0,0.3)]"

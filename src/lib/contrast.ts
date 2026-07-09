@@ -1,3 +1,10 @@
+import { hexToRgb } from "./colors";
+
+export function textColorForBg(bgHex: string): string {
+  const { r, g, b } = hexToRgb(bgHex);
+  return relativeLuminance(r, g, b) > 0.4 ? "#000000" : "#ffffff";
+}
+
 function linearize(channel: number): number {
   const c = channel / 255;
   return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);

@@ -20,7 +20,7 @@ export function ImagePreview() {
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ type: "spring", duration: 0.5, bounce: 0 }}
-      className="relative overflow-hidden rounded-2xl shadow-[0_0_0_1px_rgba(255,255,255,0.06)_inset]"
+      className="relative overflow-hidden rounded-xl shadow-[0_0_0_1px_rgba(255,255,255,0.06)_inset]"
     >
       <AnimatePresence>
         {!loaded && (
@@ -28,7 +28,7 @@ export function ImagePreview() {
             key="shimmer"
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="absolute inset-0 flex items-center justify-center bg-white/[0.02]"
+            className="absolute inset-0 flex items-center justify-center bg-white/[0.03]"
           >
             <div className="h-8 w-8 animate-pulse rounded-full bg-white/[0.06]" />
           </motion.div>

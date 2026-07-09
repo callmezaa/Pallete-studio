@@ -16,6 +16,7 @@ import { PaletteStory } from "@/components/story/PaletteStory";
 import { GSAPHero } from "@/components/home/GSAPHero";
 import { GSAPReveal } from "@/components/home/GSAPReveal";
 import { FeaturedPalette } from "@/components/home/FeaturedPalette";
+import { PageFooter } from "@/components/ui/PageFooter";
 import { useUploadStore } from "@/store/upload-store";
 import { usePaletteStore } from "@/store/palette-store";
 import { useFirstVisit } from "@/hooks/useFirstVisit";
@@ -78,7 +79,9 @@ export default function Home() {
               </GSAPReveal>
 
               <GSAPReveal>
-                <ExportPanel />
+                <div id="export-panel">
+                  <ExportPanel />
+                </div>
               </GSAPReveal>
 
               <GSAPReveal>
@@ -97,6 +100,12 @@ export default function Home() {
             </>
           )}
         </div>
+
+        <GSAPReveal>
+          <div className="mt-16">
+            <PageFooter />
+          </div>
+        </GSAPReveal>
       </div>
     </main>
   );

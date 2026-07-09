@@ -59,7 +59,7 @@ export function GradientPhysics() {
       )}
     >
       <div className="mb-4 flex items-center justify-between">
-        <h3 className="text-sm font-medium text-foreground">Gradient Physics</h3>
+        <h3 className="text-base font-semibold text-foreground text-balance">Gradient Physics</h3>
       </div>
 
       <div className="space-y-6">
